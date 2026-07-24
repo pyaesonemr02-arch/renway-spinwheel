@@ -1,0 +1,379 @@
+:root {
+    --bg-dark: #080808;
+    --bg-surface: #121212;
+    --gold-primary: #D4AF37;
+    --gold-light: #FFDF73;
+    --gold-dark: #997A00;
+    --text-main: #FFFFFF;
+    --text-muted: #A0A0A0;
+    --danger: #CF6679;
+    --font-heading: 'Playfair Display', serif;
+    --font-ui: 'Inter', sans-serif;
+    --wheel-size: min(75vh, 700px); /* Responsive sizing to prevent scrolling */
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    font-family: var(--font-ui);
+    overflow: hidden; /* Prevents ugly scrollbars on desktop */
+}
+
+/* Layout */
+.app-container {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    transition: all 0.5s ease;
+}
+
+/* Admin Sidebar */
+.admin-panel {
+    width: 400px;
+    background-color: var(--bg-surface);
+    border-right: 1px solid rgba(212, 175, 55, 0.15);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    overflow-y: auto;
+    z-index: 10;
+}
+
+/* Brand Logo */
+.brand-logo {
+    max-width: 180px;
+    height: auto;
+    margin-bottom: 15px;
+    display: block;
+}
+
+header h1 {
+    font-family: var(--font-heading);
+    color: var(--gold-primary);
+    font-size: 2rem;
+    letter-spacing: 2px;
+}
+
+header p {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.control-group h3 {
+    font-size: 1rem;
+    font-weight: 500;
+    margin-bottom: 12px;
+    color: var(--gold-primary);
+}
+
+textarea, select {
+    width: 100%;
+    background: rgba(0,0,0,0.5);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: white;
+    padding: 12px;
+    border-radius: 6px;
+    font-family: var(--font-ui);
+    margin-bottom: 12px;
+    resize: vertical;
+}
+
+textarea { height: 100px; }
+
+textarea:focus, select:focus {
+    outline: none;
+    border-color: var(--gold-primary);
+    box-shadow: 0 0 8px rgba(212, 175, 55, 0.3);
+}
+
+/* Buttons */
+.button-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+button {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: var(--font-ui);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--gold-primary), var(--gold-dark));
+    color: black;
+}
+.btn-primary:hover {
+    background: linear-gradient(135deg, var(--gold-light), var(--gold-primary));
+    transform: translateY(-1px);
+}
+
+.btn-secondary {
+    background: transparent;
+    border: 1px solid var(--gold-primary);
+    color: var(--gold-primary);
+}
+.btn-secondary:hover {
+    background: rgba(212, 175, 55, 0.1);
+}
+
+.btn-danger {
+    background: transparent;
+    border: 1px solid var(--danger);
+    color: var(--danger);
+}
+.btn-danger:hover {
+    background: rgba(207, 102, 121, 0.1);
+}
+
+.stats {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+.winners-list ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.winners-list li {
+    background: rgba(212, 175, 55, 0.05);
+    padding: 10px;
+    border-radius: 4px;
+    border-left: 3px solid var(--gold-primary);
+    font-size: 0.9rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Wheel Area */
+.wheel-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    background: radial-gradient(circle at center, #1a1a1a 0%, var(--bg-dark) 70%);
+}
+
+.wheel-wrapper {
+    position: relative;
+    width: var(--wheel-size);
+    height: var(--wheel-size);
+    border-radius: 50%;
+    box-shadow: 0 0 50px rgba(212, 175, 55, 0.15), inset 0 0 20px rgba(0,0,0,0.8);
+    background: #000;
+}
+
+#wheelCanvas {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+}
+
+/* Inner center logo */
+.wheel-center-logo {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 120px;
+    height: 120px;
+    background: var(--bg-dark);
+    border: 4px solid var(--gold-primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-heading);
+    font-size: 2.5rem;
+    color: var(--gold-primary);
+    z-index: 5;
+    box-shadow: 0 0 15px rgba(0,0,0,0.8);
+    overflow: hidden;
+}
+
+.wheel-center-logo img {
+    width: 80%;
+    height: 80%;
+    object-fit: contain;
+}
+
+/* Pointer Needle */
+.wheel-pointer {
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0; 
+    height: 0; 
+    border-left: 20px solid transparent;
+    border-right: 20px solid transparent;
+    border-top: 40px solid var(--text-main);
+    z-index: 10;
+    filter: drop-shadow(0 4px 4px rgba(0,0,0,0.5));
+}
+
+.btn-spin {
+    margin-top: 40px;
+    padding: 16px 48px;
+    font-size: 1.2rem;
+    letter-spacing: 2px;
+    font-family: var(--font-heading);
+    background: linear-gradient(135deg, var(--gold-primary), var(--gold-dark));
+    color: black;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+    transition: transform 0.1s, box-shadow 0.2s;
+    z-index: 10;
+}
+
+.btn-spin:active {
+    transform: scale(0.95);
+}
+
+/* Modal */
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.85);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    opacity: 0;
+    visibility: hidden; /* Fixes unclickable buttons */
+}
+
+.modal-content {
+    background: var(--bg-surface);
+    padding: 50px;
+    border-radius: 12px;
+    border: 1px solid var(--gold-primary);
+    text-align: center;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5), 0 0 30px rgba(212, 175, 55, 0.2);
+    transform: scale(0.9);
+    max-width: 90vw;
+}
+
+.gold-text {
+    font-family: var(--font-heading);
+    color: var(--gold-primary);
+    font-size: 3rem;
+    margin-bottom: 20px;
+}
+
+.winner-name {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    word-break: break-all;
+}
+
+.winner-prize {
+    font-size: 1.2rem;
+    color: var(--gold-light);
+    margin-bottom: 30px;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* =========================================
+   RECORD MODE (TikTok 9:16 / OBS Optimized)
+   ========================================= */
+.is-record-mode .admin-panel {
+    display: none;
+}
+
+.is-record-mode .wheel-area {
+    background: #000;
+    min-height: 100vh;
+}
+
+.is-record-mode .wheel-wrapper {
+    --wheel-size: 85vw;
+    max-width: 600px;
+    max-height: 600px;
+}
+
+/* =========================================
+   MOBILE RESPONSIVENESS
+   ========================================= */
+@media (max-width: 900px) {
+    /* Allow scrolling on mobile since elements are stacked */
+    body {
+        overflow-y: auto; 
+    }
+
+    .app-container {
+        flex-direction: column;
+        height: auto;
+        min-height: 100vh;
+    }
+
+    .wheel-area {
+        order: 1;
+        padding: 40px 20px;
+        min-height: 60vh;
+    }
+
+    .wheel-wrapper {
+        --wheel-size: 85vw;
+        max-width: 500px;
+        max-height: 500px;
+    }
+
+    .wheel-center-logo {
+        width: 80px;
+        height: 80px;
+        font-size: 1.8rem;
+        border-width: 3px;
+    }
+
+    .admin-panel {
+        order: 2;
+        width: 100%;
+        border-right: none;
+        border-top: 1px solid rgba(212, 175, 55, 0.15);
+        height: auto;
+        overflow-y: visible;
+    }
+
+    .btn-spin {
+        padding: 12px 32px;
+        font-size: 1rem;
+    }
+
+    .gold-text {
+        font-size: 2rem;
+    }
+    
+    .winner-name {
+        font-size: 1.8rem;
+    }
+}
