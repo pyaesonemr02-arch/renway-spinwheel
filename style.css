@@ -231,44 +231,56 @@ button {
     filter: drop-shadow(0 4px 4px rgba(0,0,0,0.5));
 }
 
+/* =========================================
+   BULLETPROOF SPIN BUTTON
+   ========================================= */
 .btn-spin {
     margin-top: 40px;
-    padding: 16px 48px;
+    height: 60px !important; /* Forced height */
+    width: 250px !important; /* Forced width */
+    max-height: 60px !important; 
     font-size: 1.2rem;
     letter-spacing: 2px;
     font-family: var(--font-heading);
     background: linear-gradient(135deg, var(--gold-primary), var(--gold-dark));
     color: black;
     border: none;
-    border-radius: 30px;
+    border-radius: 30px !important; /* Bulletproof pill shape */
     cursor: pointer;
     box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
     transition: transform 0.1s, box-shadow 0.2s;
     z-index: 10;
-    flex: none;
-    height: 60px;
-    width: max-content;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0; /* Prevents squishing/stretching */
 }
 
 .btn-spin:active {
     transform: scale(0.95);
 }
 
-/* Exit Record Mode Button */
+/* =========================================
+   BULLETPROOF EXIT RECORD BUTTON
+   ========================================= */
 .btn-exit-record {
-    position: absolute;
+    position: fixed !important; /* Detaches it from the flex layout entirely */
     top: 20px;
-    right: 20px;
-    background: rgba(0, 0, 0, 0.7);
-    border: 1px solid var(--gold-primary);
-    color: var(--gold-primary);
-    padding: 10px 20px;
-    border-radius: 6px;
+    left: 20px; /* Locked to the top left corner */
+    background: #111111 !important; /* Forces dark background to stop white block */
+    border: 2px solid var(--danger) !important; /* Red border */
+    color: var(--danger) !important; /* Red text */
+    padding: 0 20px !important;
+    height: 40px !important; /* Strict height */
+    line-height: 36px !important;
+    border-radius: 20px !important; /* Pill shape */
     font-size: 0.9rem;
+    font-weight: 600;
     cursor: pointer;
-    z-index: 50;
+    z-index: 9999 !important; /* Always on top */
     display: none; 
-    flex: none;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.8);
+    white-space: nowrap;
 }
 
 /* Modal */
@@ -280,7 +292,7 @@ button {
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 100;
+    z-index: 10000;
     opacity: 0;
     visibility: hidden;
 }
@@ -324,25 +336,19 @@ button {
 }
 
 /* =========================================
-   RECORD MODE (TikTok 9:16 / OBS Optimized)
+   RECORD MODE
    ========================================= */
 .is-record-mode .admin-panel {
-    display: none;
+    display: none !important;
 }
 
 .is-record-mode .btn-exit-record {
-    display: block; 
+    display: block !important; 
 }
 
 .is-record-mode .wheel-area {
     background: #000;
     min-height: 100vh;
-}
-
-.is-record-mode .wheel-wrapper {
-    --wheel-size: 95vw;
-    max-width: 600px;
-    max-height: 600px;
 }
 
 /* =========================================
@@ -366,7 +372,7 @@ button {
     }
 
     .wheel-wrapper {
-        --wheel-size: 95vw;
+        --wheel-size: 95vw; /* Keeps the wheel large on mobile */
         max-width: 500px;
         max-height: 500px;
     }
@@ -388,12 +394,10 @@ button {
     }
 
     .btn-spin {
-        flex: none;
-        height: 50px;
-        padding: 0 40px;
+        height: 55px !important; /* Smaller fixed height for mobile */
+        width: 220px !important; /* Smaller fixed width for mobile */
         font-size: 1.1rem;
         margin-top: 30px;
-        width: auto;
     }
 
     .gold-text {
