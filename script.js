@@ -17,14 +17,12 @@ const AppState = {
 };
 
 // --- Audio Engine Setup ---
-// These files must exist in your assets folder!
 const sfxTick = new Audio('assets/click.mp3');
 const sfxWinner = new Audio('assets/winner.mp3');
 
-// Preload audio and set comfortable volume levels
 sfxTick.preload = 'auto';
 sfxWinner.preload = 'auto';
-sfxTick.volume = 0.8; // Increased volume for the single button click
+sfxTick.volume = 0.8;
 sfxWinner.volume = 0.8;
 
 // DOM Elements
@@ -39,6 +37,7 @@ const ui = {
     btnSpin: document.getElementById('btnSpin'),
     btnClear: document.getElementById('btnClear'),
     btnRecordMode: document.getElementById('btnRecordMode'),
+    btnExitRecordMode: document.getElementById('btnExitRecordMode'),
     btnExport: document.getElementById('btnExport'),
     prizeSelect: document.getElementById('prizeSelect'),
     appContainer: document.getElementById('appContainer'),
@@ -95,7 +94,6 @@ function renderWheel() {
         return;
     }
 
-    // Draw Slices
     for (let i = 0; i < numSlices; i++) {
         const startAngle = AppState.currentRotation + (i * sliceAngle);
         const endAngle = startAngle + sliceAngle;
@@ -162,7 +160,6 @@ function spinWheel() {
         return;
     }
 
-    // --- Play single button click sound here ---
     sfxTick.currentTime = 0;
     sfxTick.play().catch(e => { /* Ignore browser autoplay blocks */ });
 
@@ -212,18 +209,15 @@ function showWinnerModal(username, prize) {
     ui.winnerName.textContent = username;
     ui.winnerPrize.textContent = `Won: ${prize}`;
     
-    // Play Winner Celebration Audio
     sfxWinner.currentTime = 0;
     sfxWinner.play().catch(e => { console.log("Audio blocked by browser."); });
     
-    // GSAP Animation
     gsap.to(ui.modal, { autoAlpha: 1, duration: 0.3 });
     gsap.fromTo(ui.modalContent, 
         { scale: 0.5, y: 50 }, 
         { scale: 1, y: 0, duration: 0.5, ease: "back.out(1.7)" }
     );
 
-    // Canvas Confetti
     confetti({
         particleCount: 150,
         spread: 100,
@@ -335,7 +329,12 @@ function bindEvents() {
     });
 
     ui.btnRecordMode.addEventListener('click', () => {
-        ui.appContainer.classList.toggle('is-record-mode');
+        ui.appContainer.classList.add('is-record-mode');
+    });
+
+    // Event listener for the new exit button
+    ui.btnExitRecordMode.addEventListener('click', () => {
+        ui.appContainer.classList.remove('is-record-mode');
     });
 
     ui.btnAccept.addEventListener('click', acceptWinner);
