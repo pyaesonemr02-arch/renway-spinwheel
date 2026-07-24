@@ -9,7 +9,7 @@
     --danger: #CF6679;
     --font-heading: 'Playfair Display', serif;
     --font-ui: 'Inter', sans-serif;
-    --wheel-size: min(75vh, 700px); /* Responsive sizing to prevent scrolling */
+    --wheel-size: min(75vh, 700px);
 }
 
 * {
@@ -22,7 +22,7 @@ body {
     background-color: var(--bg-dark);
     color: var(--text-main);
     font-family: var(--font-ui);
-    overflow: hidden; /* Prevents ugly scrollbars on desktop */
+    overflow: hidden;
 }
 
 /* Layout */
@@ -245,10 +245,30 @@ button {
     box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
     transition: transform 0.1s, box-shadow 0.2s;
     z-index: 10;
+    flex: none;
+    height: 60px;
+    width: max-content;
 }
 
 .btn-spin:active {
     transform: scale(0.95);
+}
+
+/* Exit Record Mode Button */
+.btn-exit-record {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.7);
+    border: 1px solid var(--gold-primary);
+    color: var(--gold-primary);
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    z-index: 50;
+    display: none; 
+    flex: none;
 }
 
 /* Modal */
@@ -262,7 +282,7 @@ button {
     justify-content: center;
     z-index: 100;
     opacity: 0;
-    visibility: hidden; /* Fixes unclickable buttons */
+    visibility: hidden;
 }
 
 .modal-content {
@@ -310,13 +330,17 @@ button {
     display: none;
 }
 
+.is-record-mode .btn-exit-record {
+    display: block; 
+}
+
 .is-record-mode .wheel-area {
     background: #000;
     min-height: 100vh;
 }
 
 .is-record-mode .wheel-wrapper {
-    --wheel-size: 85vw;
+    --wheel-size: 95vw;
     max-width: 600px;
     max-height: 600px;
 }
@@ -325,7 +349,6 @@ button {
    MOBILE RESPONSIVENESS
    ========================================= */
 @media (max-width: 900px) {
-    /* Allow scrolling on mobile since elements are stacked */
     body {
         overflow-y: auto; 
     }
@@ -338,12 +361,12 @@ button {
 
     .wheel-area {
         order: 1;
-        padding: 40px 20px;
+        padding: 40px 10px;
         min-height: 60vh;
     }
 
     .wheel-wrapper {
-        --wheel-size: 85vw;
+        --wheel-size: 95vw;
         max-width: 500px;
         max-height: 500px;
     }
@@ -365,8 +388,12 @@ button {
     }
 
     .btn-spin {
-        padding: 12px 32px;
-        font-size: 1rem;
+        flex: none;
+        height: 50px;
+        padding: 0 40px;
+        font-size: 1.1rem;
+        margin-top: 30px;
+        width: auto;
     }
 
     .gold-text {
